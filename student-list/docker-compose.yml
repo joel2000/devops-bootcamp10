@@ -1,0 +1,26 @@
+version: '2'
+services:
+  website:
+    image: php:apache
+    depends_on:
+      - api
+    environment:
+      - USERNAME=toto
+      - PASSWORD=python
+    volumes:
+      - ./website:/var/www/html
+    ports:
+      - "8081:80"
+    command: sh -c "chown www-data:www-data /var/www/html/index.php"
+    networks:
+      - netbig
+  api:
+    build: ./simple_api
+    volumes:
+      - ./simple_api/student_age.json:/data/student_age.json
+    ports:
+      - "5051:5000"
+    networks:
+      - netbig
+networks:
+  netbig:  
